@@ -1,5 +1,9 @@
+
+/* =====================
+   AUTH
+===================== */
 function login() {
-  const email = document.getElementById("email").value;
+  const email = document.getElementById("email")?.value;
   if (!email) {
     alert("Enter email");
     return;
@@ -19,6 +23,10 @@ if (window.location.pathname.includes("dashboard")) {
     window.location.href = "login.html";
   }
 }
+
+/* =====================
+   UPLOAD MODAL
+===================== */
 function openUpload() {
   document.getElementById("uploadModal").style.display = "flex";
 }
@@ -30,7 +38,7 @@ function closeUpload() {
 const videoInput = document.getElementById("videoInput");
 const preview = document.getElementById("preview");
 
-if (videoInput) {
+if (videoInput && preview) {
   videoInput.addEventListener("change", function () {
     const file = this.files[0];
     if (file) {
@@ -44,6 +52,10 @@ function submitVideo() {
   alert("Video submitted for review (demo)");
   closeUpload();
 }
+
+/* =====================
+   REVIEW QUEUE
+===================== */
 const demoVideos = [
   {
     title: "Indie Short Film",
