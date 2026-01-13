@@ -19,3 +19,28 @@ if (window.location.pathname.includes("dashboard")) {
     window.location.href = "login.html";
   }
 }
+function openUpload() {
+  document.getElementById("uploadModal").style.display = "flex";
+}
+
+function closeUpload() {
+  document.getElementById("uploadModal").style.display = "none";
+}
+
+const videoInput = document.getElementById("videoInput");
+const preview = document.getElementById("preview");
+
+if (videoInput) {
+  videoInput.addEventListener("change", function () {
+    const file = this.files[0];
+    if (file) {
+      preview.src = URL.createObjectURL(file);
+      preview.style.display = "block";
+    }
+  });
+}
+
+function submitVideo() {
+  alert("Video submitted for review (demo)");
+  closeUpload();
+}
