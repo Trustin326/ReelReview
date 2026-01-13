@@ -44,3 +44,39 @@ function submitVideo() {
   alert("Video submitted for review (demo)");
   closeUpload();
 }
+const demoVideos = [
+  {
+    title: "Indie Short Film",
+    src: "https://www.w3schools.com/html/mov_bbb.mp4"
+  }
+];
+
+function openQueue() {
+  document.getElementById("queueModal").style.display = "flex";
+  document.getElementById("queueVideo").src = demoVideos[0].src;
+}
+
+function closeQueue() {
+  document.getElementById("queueModal").style.display = "none";
+}
+
+function submitReview() {
+  const text = document.getElementById("reviewText").value;
+  const rating = document.getElementById("rating").value;
+
+  if (text.split(" ").length < 50) {
+    alert("Review must be at least 50 words.");
+    return;
+  }
+
+  if (!rating) {
+    alert("Please select a rating.");
+    return;
+  }
+
+  alert("Review submitted! +$0.50 earned (demo)");
+
+  document.getElementById("reviewText").value = "";
+  document.getElementById("rating").value = "";
+  closeQueue();
+}
