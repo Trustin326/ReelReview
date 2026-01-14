@@ -1,65 +1,74 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Login — ReelReview</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: radial-gradient(circle, #1c1c2e, #0b0b14);
-      font-family: Arial, sans-serif;
-      color: white;
+    :root{--bg:#070712;--text:#fff;--muted:rgba(255,255,255,.72);--brand:#e50914;--panel:rgba(255,255,255,.06);--radius:22px}
+    *{box-sizing:border-box}
+    body{
+      margin:0; min-height:100vh;
+      font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background: radial-gradient(1100px 700px at 20% 0%, rgba(229,9,20,.22), transparent 55%),
+                  linear-gradient(180deg, #05050f, #0b0b14 60%, #070712);
+      color:var(--text);
+      display:grid;
+      place-items:center;
+      padding:22px;
     }
-
-    .login-box {
-      background: rgba(255,255,255,0.05);
-      padding: 40px;
-      border-radius: 20px;
-      width: 320px;
-      text-align: center;
-      backdrop-filter: blur(10px);
+    .card{
+      width:min(520px, 92vw);
+      padding:18px;
+      background: var(--panel);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius: var(--radius);
+      box-shadow: 0 24px 80px rgba(0,0,0,.55);
+      position:relative;
     }
-
-    input {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border-radius: 10px;
-      border: none;
+    h1{margin:0 0 6px;font-size:28px}
+    p{margin:0 0 14px;color:var(--muted);line-height:1.45}
+    label{display:block;color:rgba(255,255,255,.8);font-size:13px;margin:10px 0 6px}
+    input{
+      width:100%;
+      padding:12px 12px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.25);
+      color:white;
+      outline:none;
     }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      border-radius: 20px;
-      border: none;
-      background: #e50914;
-      color: white;
-      font-size: 1rem;
-      cursor: pointer;
-      margin-top: 15px;
+    input:focus{border-color: rgba(229,9,20,.55); box-shadow: 0 0 0 6px rgba(229,9,20,.18)}
+    .row{display:flex; gap:10px; margin-top:12px; flex-wrap:wrap}
+    a.btn, button.btn{
+      appearance:none; border:none; cursor:pointer; text-decoration:none;
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:11px 14px; border-radius: 999px;
+      font-weight:800;
     }
+    .btn{background:var(--brand); color:white}
+    .btn.secondary{background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12); color:white}
+    .tiny{margin-top:10px; font-size:12.5px; color: rgba(255,255,255,.65)}
   </style>
 </head>
-
 <body>
+  <div class="card">
+    <h1>Login</h1>
+    <p>Demo login: enter any email to access the dashboard.</p>
 
-<div class="login-box">
-  <h2>🎬 ReelReview</h2>
-  <p>Login or create account</p>
+    <label for="email">Email</label>
+    <input id="email" type="email" placeholder="you@email.com" autocomplete="email" />
 
-  <input id="email" placeholder="Email" />
-  <input id="password" type="password" placeholder="Password" />
+    <div class="row">
+      <button class="btn" onclick="login()">Continue</button>
+      <a class="btn secondary" href="./index.html">Back</a>
+    </div>
 
-  <button onclick="login()">Enter</button>
-</div>
+    <div class="tiny">
+      Note: this is a demo login (localStorage). Later you can connect Stripe + real auth.
+    </div>
+  </div>
 
-<script src="app.js"></script>
+  <script src="./app.js"></script>
 </body>
 </html>
