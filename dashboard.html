@@ -5,7 +5,52 @@
   <title>Dashboard — ReelReview</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
+  <#uploadModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.upload-box {
+  background: #111122;
+  padding: 30px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 420px;
+  text-align: center;
+}
+
+.upload-box input,
+.upload-box textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 10px;
+  border: none;
+}
+
+.upload-box textarea {
+  resize: none;
+  height: 80px;
+}
+
+.upload-box video {
+  width: 100%;
+  margin-top: 10px;
+  border-radius: 10px;
+}
+
+.secondary {
+  background: #444;
+  margin-top: 10px;
+}
+>
     body {
       margin: 0;
       background: #0b0b14;
