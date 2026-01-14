@@ -173,8 +173,12 @@
     </select>
 
     <textarea id="reviewText" placeholder="Write your review (min 50 words)"></textarea>
+<p id="timerText">Watch 45 seconds to unlock review</p>
 
-    <button onclick="submitReview()">Submit Review</button>
+<button id="submitBtn" onclick="submitReview()" disabled>
+  Submit Review
+</button>
+
     <button class="secondary" onclick="closeQueue()">Close</button>
   </div>
 </div>
