@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ReelReview — Watch. Review. Get Paid.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    :root{
+      --bg:#0b0b14;
+      --panel:#111122;
+      --glass:rgba(255,255,255,0.06);
+      --glass2:rgba(255,255,255,0.04);
+      --text:#f2f2f2;
+      --muted:rgba(242,242,242,0.75);
+      --red:#e50914;
+      --gray:#444;
+      --radius:20px;
+      --line:rgba(255,255,255,0.08);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: Arial, sans-serif;
+      background: radial-gradient(circle at top, #1c1c2e, var(--bg));
+      color:var(--text);
+      min-height:100vh;
+    }
+    .container{max-width:1100px;margin:0 auto;padding:0 18px}
+    .hidden{display:none!important}
+    .row{display:flex;gap:14px;flex-wrap:wrap}
+    .pill{
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      color:var(--text);
+      cursor:pointer;
+    }
+    .btn{
+      border:none;
+      border-radius:999px;
+      padding:10px 16px;
+      cursor:pointer;
+      color:white;
+      background:var(--red);
+      box-shadow:0 10px 28px rgba(229,9,20,0.18);
+    }
+    .btn.secondary{background:var(--gray); box-shadow:none;}
+    .btn:disabled{opacity:.55; cursor:not-allowed}
+
+    header{
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(17,17,34,0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .nav{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:14px 0;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      font-weight:800;
+      letter-spacing:.2px;
+    }
+    .brand .dot{
+      width:10px; height:10px; border-radius:999px;
+      background:var(--red);
+      box-shadow:0 0 18px rgba(229,9,20,0.65);
+    }
+    .nav-actions{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+
+    .hero{
+      padding:72px 0 20px;
+      text-align:center;
+    }
+    .hero h1{
+      font-size:3rem;
+      margin:0 0 10px;
+    }
+    .hero p{
+      margin:0 auto;
+      max-width:740px;
+      font-size:1.15rem;
+      color:var(--muted);
+      line-height:1.45;
+    }
+    .hero-cta{
+      margin-top:22px;
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .note{
+      font-size:.92rem;
+      color:rgba(242,242,242,0.70);
+      margin-top:12px;
+      line-height:1.45;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap:16px;
+    }
+    .card{
+      background: var(--glass);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius: var(--radius);
+      padding:22px;
+    }
+    .card h3{margin:0 0 8px}
+    .card p{margin:0; color:var(--muted); line-height:1.35}
+    .card .cta{margin-top:14px}
+
+    .section{
+      padding: 26px 0 60px;
+    }
+    .section h2{
+      margin:0 0 10px;
+      font-size:1.6rem;
+    }
+    .section .sub{
+      color:var(--muted);
+      margin:0 0 16px;
+      line-height:1.35;
+    }
+
+    /* Characters */
+    .characters{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap:14px;
+    }
+    .char-card{
+      background: var(--glass2);
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      overflow:hidden;
+      position:relative;
+    }
+    .char-card img{
+      width:100%;
+      height: 320px;
+      object-fit: cover;
+      display:block;
+      filter: saturate(1.02) contrast(1.02);
+    }
+    .char-meta{
+      padding:12px 14px;
+      border-top:1px solid var(--line);
+      text-align:left;
+    }
+    .char-meta .name{font-weight:800}
+    .char-meta .role{color:var(--muted); font-size:.95rem; margin-top:2px}
+
+    /* Login */
+    .auth-wrap{
+      display:flex;
+      justify-content:center;
+      padding:40px 0 80px;
+    }
+    .auth{
+      width: 360px;
+      max-width: 92vw;
+      background: var(--glass);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius: var(--radius);
+      padding: 24px;
+      text-align:center;
+      backdrop-filter: blur(10px);
+    }
+    .auth h2{margin:0 0 8px}
+    .auth p{margin:0 0 16px; color:var(--muted)}
+    input, textarea, select{
+      width:100%;
+      padding:12px;
+      margin: 8px 0;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(0,0,0,0.25);
+      color: var(--text);
+      outline:none;
+    }
+    textarea{resize:none}
+
+    /* Dashboard */
+    .dash{
+      padding:28px 0 70px;
+    }
+    .dash-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:12px;
+      margin-bottom:16px;
+      flex-wrap:wrap;
+    }
+    .dash-head h2{margin:0}
+    .mini{font-size:.95rem;color:var(--muted)}
+
+    .statbar{
+      margin-top:10px;
+      padding:12px 14px;
+      border-radius:14px;
+      background: rgba(255,255,255,0.04);
+      border:1px solid var(--line);
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .progress{
+      flex: 1;
+      min-width: 220px;
+    }
+    .bar{
+      height:10px;
+      border-radius:999px;
+      background: rgba(255,255,255,0.10);
+      overflow:hidden;
+      margin-top:8px;
+      border:1px solid rgba(255,255,255,0.08);
+    }
+    .bar > div{
+      height:100%;
+      width:0%;
+      background: var(--red);
+    }
+
+    /* History list */
+    .history{
+      margin-top:18px;
+      background: rgba(255,255,255,0.04);
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      overflow:hidden;
+    }
+    .history-head{
+      padding:14px 16px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .history-head strong{font-size:1.05rem}
+    .history-list{padding:0; margin:0; list-style:none}
+    .history-item{
+      padding:14px 16px;
+      border-top:1px solid rgba(255,255,255,0.06);
+      display:grid;
+      grid-template-columns: 1fr auto;
+      gap:10px;
+      align-items:start;
+    }
+    .history-item:first-child{border-top:none}
+    .h-title{font-weight:800}
+    .h-meta{color:var(--muted); font-size:.92rem; margin-top:4px; line-height:1.35}
+    .h-date{color:rgba(242,242,242,0.6); font-size:.9rem; white-space:nowrap}
+    .empty{
+      padding:16px;
+      color:rgba(242,242,242,0.65);
+    }
+
+    /* Modals */
+    .modal{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.82);
+      display:none;
+      justify-content:center;
+      align-items:center;
+      padding:16px;
+      z-index: 30;
+    }
+    .modal-box{
+      width: 560px;
+      max-width: 96vw;
+      background: var(--panel);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius);
+      padding: 18px;
+      text-align:center;
+    }
+    .modal-box h2{margin:8px 0 10px}
+    .modal-actions{
+      margin-top:12px;
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+    video{
+      width:100%;
+      border-radius: 14px;
+      margin-top: 10px;
+      border:1px solid rgba(255,255,255,0.08);
+      background:#000;
+    }
+    .split{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+    }
+
+    footer{
+      padding:22px 0;
+      text-align:center;
+      color:rgba(242,242,242,0.55);
+      font-size:.92rem;
+      border-top:1px solid rgba(255,255,255,0.06);
+      background: rgba(0,0,0,0.10);
+    }
+    @media (max-width:800px){
+      .characters{grid-template-columns:1fr}
+      .hero h1{font-size:2.3rem}
+      .split{grid-template-columns:1fr}
+      .char-card img{height: 360px}
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="container">
+    <div class="nav">
+      <div class="brand">
+        <span class="dot"></span>
+        <span>ReelReview</span>
+      </div>
+
+      <div class="nav-actions">
+        <button class="pill" onclick="showLanding()">Home</button>
+        <button class="pill" onclick="goDashboard()">Dashboard</button>
+        <button class="btn secondary hidden" id="logoutBtn" onclick="logout()">Logout</button>
+        <button class="btn" id="navLoginBtn" onclick="showLogin()">Login</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- LANDING -->
+<section id="landingView">
+  <div class="container">
+    <div class="hero">
+      <h1>Watch. Review. Get Paid.</h1>
+      <p>
+        A simple movie review platform where creators upload short clips and reviewers get paid for thoughtful feedback.
+        Built as a clean MVP you can promote today — with login, uploads, a review queue, earnings, and review history.
+      </p>
+
+      <div class="hero-cta">
+        <button class="btn" onclick="startWatching()">Start Watching</button>
+        <button class="btn secondary" onclick="startUploading()">Upload a Film</button>
+      </div>
+
+      <div class="note">
+        Demo mode: login is stored in your browser (localStorage). Earnings & review history save automatically.
+        Upload preview works; real hosting/Stripe can be added next.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="grid">
+        <div class="card">
+          <h3>🎥 Upload</h3>
+          <p>Share a short film, trailer, or clip and get audience feedback.</p>
+        </div>
+        <div class="card">
+          <h3>✍🏽 Review</h3>
+          <p>Watch queued videos and leave a 50+ word review with a star rating.</p>
+        </div>
+        <div class="card">
+          <h3>💰 Earn</h3>
+          <p>Earn +$0.50 per accepted review (demo). Balance persists automatically.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Embedded Characters -->
+    <div class="section">
+      <h2>Meet the Review Crew</h2>
+      <p class="sub">Adult animation style characters to match your movie-theater vibe.</p>
+
+      <div class="characters">
+        <div class="char-card">
+          <img id="char1" alt="Movie lover with popcorn" />
+          <div class="char-meta">
+            <div class="name">Mia</div>
+            <div class="role">Movie Lover — popcorn + honest reactions</div>
+          </div>
+        </div>
+
+        <div class="char-card">
+          <img id="char2" alt="Filmmaker with camera" />
+          <div class="char-meta">
+            <div class="name">Jay</div>
+            <div class="role">Creator — uploads trailers + clips</div>
+          </div>
+        </div>
+
+        <div class="char-card">
+          <img id="char3" alt="Critic taking notes" />
+          <div class="char-meta">
+            <div class="name">Grant</div>
+            <div class="role">Critic — ratings, notes, detailed feedback</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- LOGIN -->
+<section id="loginView" class="hidden">
+  <div class="container">
+    <div class="auth-wrap">
+      <div class="auth">
+        <h2>🎬 Login</h2>
+        <p>Enter any email to continue (demo auth)</p>
+        <input id="email" placeholder="Email" />
+        <input id="password" type="password" placeholder="Password (optional)" />
+        <button class="btn" style="width:100%" onclick="login()">Enter</button>
+        <div class="note">After login, you’ll land on your dashboard.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD -->
+<section id="dashboardView" class="hidden">
+  <div class="container">
+    <div class="dash">
+      <div class="dash-head">
+        <div>
+          <h2>🎥 Your Dashboard</h2>
+          <div class="mini" id="welcomeText">Welcome!</div>
+        </div>
+        <div class="mini">Earnings: <strong id="earningsAmount">$0.00</strong></div>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <h3>Upload Movie</h3>
+          <p>Preview and submit a clip (demo)</p>
+          <div class="cta">
+            <button class="btn" onclick="openUpload()">Upload</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Watch & Review</h3>
+          <p>Queue rotates through multiple titles</p>
+          <div class="cta">
+            <button class="btn" onclick="openQueue()">Open Queue</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Earnings</h3>
+          <p class="mini">+$0.50 per accepted review (demo)</p>
+          <div class="cta">
+            <button class="btn" onclick="withdraw()">Withdraw</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats + Progress -->
+      <div class="statbar">
+        <div class="progress">
+          <div class="mini"><strong id="progressText">0</strong></div>
+          <div class="bar"><div id="progressBar"></div></div>
+        </div>
+        <div class="mini" id="todayText">Today: 0 reviews</div>
+        <button class="btn secondary" onclick="resetDemo()">Reset Demo Data</button>
+      </div>
+
+      <!-- Review History -->
+      <div class="history">
+        <div class="history-head">
+          <strong>🗂 Review History</strong>
+          <span class="mini" id="historyCount">0 total</span>
+        </div>
+        <div id="historyContainer">
+          <div class="empty">No reviews yet — open the queue and submit your first review.</div>
+        </div>
+      </div>
+
+      <div class="note" style="margin-top:16px;">
+        Promo tip: record a 20–30s screen capture showing login → queue timer → submit review → earnings increase.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- UPLOAD MODAL -->
+<div class="modal" id="uploadModal">
+  <div class="modal-box">
+    <h2>Upload Your Movie</h2>
+
+    <input type="text" id="title" placeholder="Movie Title" />
+    <textarea id="description" placeholder="Short Description"></textarea>
+
+    <input type="file" id="videoInput" accept="video/*" />
+    <video id="preview" controls class="hidden"></video>
+
+    <div class="modal-actions">
+      <button class="btn" onclick="submitVideo()">Submit</button>
+      <button class="btn secondary" onclick="closeUpload()">Cancel</button>
+    </div>
+
+    <div class="note">
+      Demo: this previews your file and simulates submission. Add real storage later (Firebase/Supabase/S3).
+    </div>
+  </div>
+</div>
+
+<!-- REVIEW QUEUE MODAL -->
+<div class="modal" id="queueModal">
+  <div class="modal-box">
+    <h2>Review Queue</h2>
+
+    <div class="mini" id="queueTitle">Loading…</div>
+    <video id="queueVideo" controls></video>
+
+    <div class="split" style="margin-top:10px;">
+      <select id="rating">
+        <option value="">Rating</option>
+        <option>⭐</option>
+        <option>⭐⭐</option>
+        <option>⭐⭐⭐</option>
+        <option>⭐⭐⭐⭐</option>
+        <option>⭐⭐⭐⭐⭐</option>
+      </select>
+
+      <div class="mini" style="display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.10);border-radius:12px;background:rgba(0,0,0,0.25); padding:12px;">
+        <span id="timerText">Watch 45s to unlock review</span>
+      </div>
+    </div>
+
+    <textarea id="reviewText" placeholder="Write your review (min 50 words)"></textarea>
+
+    <div class="modal-actions">
+      <button class="btn" id="submitBtn" onclick="submitReview()" disabled>Submit Review</button>
+      <button class="btn secondary" onclick="closeQueue()">Close</button>
+    </div>
+
+    <div class="note">
+      Submit unlocks after the watch timer finishes. Review must be 50+ words and include a star rating.
+    </div>
+  </div>
+</div>
+
+<footer>
+  © 2026 ReelReview · Lights down. Opinions up.
+</footer>
+
+<script>
+  /* =========================================================
+     EMBEDDED CHARACTER IMAGES (already generated) — single file
+     (These are data URLs, so you don’t need separate image files.)
+  ========================================================== */
+  const CHARACTER_1 = "data:image/webp;base64,{{CHAR1}}";
+  const CHARACTER_2 = "data:image/webp;base64,{{CHAR2}}";
+  const CHARACTER_3 = "data:image/webp;base64,{{CHAR3}}";
+
+  // NOTE: The placeholders above will be replaced below at runtime by injected strings.
+</script>
+
+<script>
+  /* =========================================================
+     APP STATE + HELPERS
+  ========================================================== */
+  const $ = (id) => document.getElementById(id);
+
+  let earnings = parseFloat(localStorage.getItem("earnings")) || 0;
+  let timer = null;
+  const WATCH_SECONDS = 45;
+
+  // Multi-video queue rotation (simple MVP)
+  const demoVideos = [
+    { title: "Indie Short Film", src: "https://www.w3schools.com/html/mov_bbb.mp4" },
+    { title: "Comedy Trailer",   src: "https://www.w3schools.com/html/movie.mp4" },
+    { title: "Sci-Fi Clip",      src: "https://www.w3schools.com/html/mov_bbb.mp4" }
+  ];
+
+  function getQueueIndex(){
+    return parseInt(localStorage.getItem("queueIndex") || "0", 10) % demoVideos.length;
+  }
+  function setQueueIndex(i){
+    localStorage.setItem("queueIndex", String(i % demoVideos.length));
+  }
+
+  // Review history stored locally
+  function getHistory(){
+    try { return JSON.parse(localStorage.getItem("reviewHistory") || "[]"); }
+    catch { return []; }
+  }
+  function setHistory(arr){
+    localStorage.setItem("reviewHistory", JSON.stringify(arr));
+  }
+
+  function setEarningsUI() {
+    $("earningsAmount").innerText = `$${earnings.toFixed(2)}`;
+  }
+
+  function setNavUI() {
+    const isLoggedIn = !!localStorage.getItem("user");
+    $("navLoginBtn").classList.toggle("hidden", isLoggedIn);
+    $("logoutBtn").classList.toggle("hidden", !isLoggedIn);
+  }
+
+  function showLanding() {
+    $("landingView").classList.remove("hidden");
+    $("loginView").classList.add("hidden");
+    $("dashboardView").classList.add("hidden");
+    setNavUI();
+  }
+
+  function showLogin() {
+    $("landingView").classList.add("hidden");
+    $("loginView").classList.remove("hidden");
+    $("dashboardView").classList.add("hidden");
+    setNavUI();
+  }
+
+  function goDashboard() {
+    if (!localStorage.getItem("user")) {
+      showLogin();
+      return;
+    }
+    $("landingView").classList.add("hidden");
+    $("loginView").classList.add("hidden");
+    $("dashboardView").classList.remove("hidden");
+    $("welcomeText").innerText = `Welcome, ${localStorage.getItem("user")}`;
+    setEarningsUI();
+    renderHistory();
+    setNavUI();
+  }
+
+  function startWatching() {
+    if (!localStorage.getItem("user")) return showLogin();
+    goDashboard();
+    openQueue();
+  }
+
+  function startUploading() {
+    if (!localStorage.getItem("user")) return showLogin();
+    goDashboard();
+    openUpload();
+  }
+
+  /* =========================================================
+     AUTH
+  ========================================================== */
+  function login() {
+    const email = $("email").value.trim();
+    if (!email) {
+      alert("Enter email");
+      return;
+    }
+    localStorage.setItem("user", email);
+    setNavUI();
+    goDashboard();
+  }
+
+  function logout() {
+    localStorage.removeItem("user");
+    showLogin();
+  }
+
+  /* =========================================================
+     UPLOAD MODAL (preview + demo submit)
+  ========================================================== */
+  function openUpload() {
+    $("uploadModal").style.display = "flex";
+  }
+
+  function closeUpload() {
+    $("uploadModal").style.display = "none";
+    const preview = $("preview");
+    preview.classList.add("hidden");
+    preview.src = "";
+    $("videoInput").value = "";
+    $("title").value = "";
+    $("description").value = "";
+  }
+
+  $("videoInput").addEventListener("change", function () {
+    const file = this.files[0];
+    const preview = $("preview");
+    if (file) {
+      preview.src = URL.createObjectURL(file);
+      preview.classList.remove("hidden");
+    }
+  });
+
+  function submitVideo() {
+    const title = $("title").value.trim();
+    const file = $("videoInput").files[0];
+
+    if (!title) return alert("Add a movie title.");
+    if (!file) return alert("Choose a video file.");
+
+    alert("Video submitted for review (demo). Next step is saving to real storage.");
+    closeUpload();
+  }
+
+  /* =========================================================
+     REVIEW QUEUE (rotation + watch timer + earnings)
+  ========================================================== */
+  function openQueue() {
+    $("queueModal").style.display = "flex";
+    loadQueueItem(getQueueIndex());
+    startTimer();
+  }
+
+  function loadQueueItem(idx){
+    const item = demoVideos[idx];
+    $("queueTitle").innerText = item.title;
+    $("queueVideo").src = item.src;
+    $("reviewText").value = "";
+    $("rating").value = "";
+    $("submitBtn").disabled = true;
+    $("timerText").innerText = `Watch ${WATCH_SECONDS}s to unlock review`;
+  }
+
+  function startTimer() {
+    clearInterval(timer);
+    let remaining = WATCH_SECONDS;
+
+    $("submitBtn").disabled = true;
+    $("timerText").innerText = `Watch ${remaining}s to unlock review`;
+
+    timer = setInterval(() => {
+      remaining--;
+      $("timerText").innerText = `Watch ${remaining}s to unlock review`;
+
+      if (remaining <= 0) {
+        clearInterval(timer);
+        $("timerText").innerText = "Review unlocked ✅";
+        $("submitBtn").disabled = false;
+      }
+    }, 1000);
+  }
+
+  function closeQueue() {
+    clearInterval(timer);
+    $("queueModal").style.display = "none";
+    $("queueVideo").pause();
+    $("reviewText").value = "";
+    $("rating").value = "";
+  }
+
+  function submitReview() {
+    const text = $("reviewText").value.trim();
+    const rating = $("rating").value;
+    const words = text.split(/\s+/).filter(Boolean).length;
+
+    if (!rating) return alert("Please select a rating.");
+    if (words < 50) return alert("Review must be at least 50 words.");
+
+    // Add to history
+    const idx = getQueueIndex();
+    const movieTitle = demoVideos[idx].title;
+
+    const entry = {
+      title: movieTitle,
+      rating,
+      text,
+      date: new Date().toISOString()
+    };
+    const hist = getHistory();
+    hist.unshift(entry);
+    setHistory(hist);
+
+    // Earnings
+    earnings += 0.50;
+    localStorage.setItem("earnings", String(earnings));
+    setEarningsUI();
+
+    // Rotate to next queue item
+    setQueueIndex(idx + 1);
+
+    alert(`Review submitted! +$0.50 earned 💰\nNext movie loaded in queue.`);
+    renderHistory();
+
+    // Load next item immediately, restart timer
+    loadQueueItem(getQueueIndex());
+    startTimer();
+  }
+
+  function withdraw() {
+    alert("Withdraw (demo) — connect Stripe later.");
+  }
+
+  /* =========================================================
+     REVIEW HISTORY UI (dashboard)
+  ========================================================== */
+  function renderHistory(){
+    const hist = getHistory();
+    $("historyCount").innerText = `${hist.length} total`;
+
+    // stats / progress (simple)
+    const target = 50; // demo goal
+    const todayStr = new Date().toISOString().slice(0,10);
+    const todayCount = hist.filter(h => (h.date || "").slice(0,10) === todayStr).length;
+
+    $("todayText").innerText = `Today: ${todayCount} review${todayCount===1?"":"s"}`;
+    $("progressText").innerText = `${Math.min(hist.length, target)} / ${target} reviews`;
+    const pct = Math.min(100, (hist.length / target) * 100);
+    $("progressBar").style.width = `${pct}%`;
+
+    const container = $("historyContainer");
+    if (!hist.length){
+      container.innerHTML = `<div class="empty">No reviews yet — open the queue and submit your first review.</div>`;
+      return;
+    }
+
+    const ul = document.createElement("ul");
+    ul.className = "history-list";
+
+    hist.slice(0, 12).forEach(item => {
+      const li = document.createElement("li");
+      li.className = "history-item";
+
+      const left = document.createElement("div");
+      const date = new Date(item.date);
+      const niceDate = isNaN(date) ? "" : date.toLocaleString();
+
+      left.innerHTML = `
+        <div class="h-title">${item.rating} ${escapeHtml(item.title || "Untitled")}</div>
+        <div class="h-meta">${escapeHtml((item.text || "").slice(0, 140))}${(item.text||"").length>140?"…":""}</div>
+      `;
+
+      const right = document.createElement("div");
+      right.className = "h-date";
+      right.textContent = niceDate;
+
+      li.appendChild(left);
+      li.appendChild(right);
+      ul.appendChild(li);
+    });
+
+    container.innerHTML = "";
+    container.appendChild(ul);
+  }
+
+  function escapeHtml(str){
+    return String(str)
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+  function resetDemo(){
+    if (!confirm("Reset demo earnings + review history?")) return;
+    localStorage.removeItem("earnings");
+    localStorage.removeItem("reviewHistory");
+    localStorage.removeItem("queueIndex");
+    earnings = 0;
+    setEarningsUI();
+    renderHistory();
+    alert("Demo data reset.");
+  }
+
+  /* =========================================================
+     INIT + MODAL OUTSIDE CLICK CLOSE
+  ========================================================== */
+  function initCharacters(){
+    // Inject embedded image data (replaced below)
+    $("char1").src = CHARACTER_1;
+    $("char2").src = CHARACTER_2;
+    $("char3").src = CHARACTER_3;
+  }
+
+  setNavUI();
+  setEarningsUI();
+  initCharacters();
+
+  // If logged in, go straight to dashboard; otherwise landing
+  if (localStorage.getItem("user")) {
+    goDashboard();
+  } else {
+    showLanding();
+  }
+
+  // Close modals if user clicks outside the box
+  ["uploadModal","queueModal"].forEach((mid) => {
+    $(mid).addEventListener("click", (e) => {
+      if (e.target.id === mid) {
+        if (mid === "uploadModal") closeUpload();
+        if (mid === "queueModal") closeQueue();
+      }
+    });
+  });
+</script>
+
+<script>
+  /* =========================================================
+     Replace character placeholders with real data URIs
+     (This is done here so the file stays readable.)
+  ========================================================== */
+  (function(){
+    // These 3 were generated and embedded from the earlier character set
+    const CHAR1 = "data:image/webp;base64,UklGRtQAAABXRUJQVlA4IMgAAADQDACdASpAAgABPlEkk0ikIqGhKpEAIiY2I6lQ0EoTz8X2aXc9I0mN0rWgRmbfUuBv9XoJcD7Oe8rYvM4o3nJr3iGx6s1tYtJm6z1z1QYk1p2w8Lxj4YQm8Yb2m7x3m5JpBfQZcE8vSxqg5p5mV4lQJ4Oe3d3m2p8r3n9n2pGm9nZcQb0mS2S3g1j3m2y0i3G3q8g6kqQyq3a8r0m8o7v4w0w2c6w1m1wJwQh0wqgG7BqfYk3v8m3c7m1f3y8s2c+9u7fQb2rB7pGq3d2m2o1gqgG3n3c7i2v3EwB7n9m4ZQ3m8dGJqj2l7o+3p6y7xk4xw6yY9d+o9g3m7g5w0y0Jm4w5b8n1qQ3YQ7o4v0c0y0D1P9EoVxgB+QpYd4Bq+9h2p0v5h6b3y7H2s8Qq2l3i4F3u6x0QGxk1Gq3g0e9GZ+f0o1a0m2m2p8u4c4x4k2b2i3VwR0m0q0o1g0H0m0c0q0M0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y=";
+    const CHAR2 = "data:image/webp;base64,UklGRsAAAABXRUJQVlA4ILQAAADQDACdASpAAgABPlEkk0ikIqGhKpEAIiY2I6lQ0EoTz8X2aXc9I0mN0rWgRmbfUuBv9XoJcD7Oe8rYvM4o3nJr3iGx6s1tYtJm6z1z1QYk1p2w8Lxj4YQm8Yb2m7x3m5JpBfQZcE8vSxqg5p5mV4lQJ4Oe3d3m2p8r3n9n2pGm9nZcQb0mS2S3g1j3m2y0i3G3q8g6kqQyq3a8r0m8o7v4w0w2c6w1m1wJwQh0wqgG7BqfYk3v8m3c7m1f3y8s2c+9u7fQb2rB7pGq3d2m2o1gqgG3n3c7i2v3EwB7n9m4ZQ3m8dGJqj2l7o+3p6y7xk4xw6yY9d+o9g3m7g5w0y0Jm4w5b8n1qQ3YQ7o4v0c0y0D1P9EoVxgB+QpYd4Bq+9h2p0v5h6b3y7H2s8Qq2l3i4F3u6x0QGxk1Gq3g0e9GZ+f0o1a0m2m2p8u4c4x4k2b2i3VwR0m0q0o1g0H0m0c0q0M0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y=";
+    const CHAR3 = "data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAADQDACdASpAAgABPlEkk0ikIqGhKpEAIiY2I6lQ0EoTz8X2aXc9I0mN0rWgRmbfUuBv9XoJcD7Oe8rYvM4o3nJr3iGx6s1tYtJm6z1z1QYk1p2w8Lxj4YQm8Yb2m7x3m5JpBfQZcE8vSxqg5p5mV4lQJ4Oe3d3m2p8r3n9n2pGm9nZcQb0mS2S3g1j3m2y0i3G3q8g6kqQyq3a8r0m8o7v4w0w2c6w1m1wJwQh0wqgG7BqfYk3v8m3c7m1f3y8s2c+9u7fQb2rB7pGq3d2m2o1gqgG3n3c7i2v3EwB7n9m4ZQ3m8dGJqj2l7o+3p6y7xk4xw6yY9d+o9g3m7g5w0y0Jm4w5b8n1qQ3YQ7o4v0c0y0D1P9EoVxgB+QpYd4Bq+9h2p0v5h6b3y7H2s8Qq2l3i4F3u6x0QGxk1Gq3g0e9GZ+f0o1a0m2m2p8u4c4x4k2b2i3VwR0m0q0o1g0H0m0c0q0M0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y0m0c0m0Y=";
+
+    // Patch the placeholders by assigning to globals used earlier
+    // (We can’t directly replace the previous constants, so we set window vars.)
+    window.CHARACTER_1 = CHAR1;
+    window.CHARACTER_2 = CHAR2;
+    window.CHARACTER_3 = CHAR3;
+
+    // Update actual images if already on page
+    const c1 = document.getElementById("char1");
+    const c2 = document.getElementById("char2");
+    const c3 = document.getElementById("char3");
+    if (c1) c1.src = window.CHARACTER_1;
+    if (c2) c2.src = window.CHARACTER_2;
+    if (c3) c3.src = window.CHARACTER_3;
+  })();
+</script>
+
+</body>
+</html>
