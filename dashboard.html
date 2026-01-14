@@ -75,5 +75,21 @@
 </section>
 
 <script src="app.js"></script>
-</body>
+<<!-- Upload Modal -->
+<div id="uploadModal" style="display:none;">
+  <div class="upload-box">
+    <h2>Upload Your Movie</h2>
+
+    <input type="text" id="title" placeholder="Movie Title" />
+    <textarea id="description" placeholder="Short Description"></textarea>
+
+    <input type="file" id="videoInput" accept="video/*" />
+    
+    <video id="preview" controls style="display:none;"></video>
+
+    <button onclick="submitVideo()">Submit</button>
+    <button class="secondary" onclick="closeUpload()">Cancel</button>
+  </div>
+</div>
+>
 </html>
